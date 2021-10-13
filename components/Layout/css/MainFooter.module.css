@@ -1,0 +1,27 @@
+.footer {
+  background-color: var(--color-primary-5);
+  color: var(--color-primary-1);
+  text-align: center;
+  padding: 1rem;
+}
+
+.footer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer__list-item {
+  display: inline-block;
+  margin: 0 1rem;
+}
+
+.footer__list-item a {
+  text-decoration: none;
+  color: #edefee;
+}
+
+.footer__list-item a:hover,
+.footer__list-item a:active {
+  color: var(--color-primary-4);
+}

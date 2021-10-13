@@ -1,0 +1,18 @@
+:root {
+  --color-primary-1: #fff;
+  --color-primary-2: #000;
+  --color-primary-3: #7e0a0a;
+  --color-primary-4: #ffa14a;
+  --color-primary-5: #41403c;
+  --header-height: 3rem;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-primary-1);
+  font-family: 'Roboto', sans-serif;
+}
