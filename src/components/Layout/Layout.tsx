@@ -1,6 +1,5 @@
 import { FC, Fragment } from 'react';
-
-import MainHeader from './MainHeader'
+import MainHeader from './MainHeader';
 import MainFooter from './MainFooter';
 import MainContent from './MainContent';
 

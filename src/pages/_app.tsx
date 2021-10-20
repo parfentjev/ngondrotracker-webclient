@@ -1,11 +1,12 @@
-import '../styles/globals.css';
+import '../components/UI/css/shared.css';
 import Layout from '../components/Layout/Layout';
-import { Fragment, ReactNode } from 'react';
 import Head from 'next/head';
+import { AuthContextProvider } from '../store/auth-context';
+import { AppProps } from 'next/dist/shared/lib/router/router';
 
-const Application: ReactNode = ({ Component, pageProps }) => {
+const Application = ({ Component, pageProps }: AppProps) => {
   return (
-    <Fragment>
+    <AuthContextProvider>
       <Head>
         <title>Ngondro Meditation Tracker</title>
         <link rel='preconnect' href='https://fonts.googleapis.com' />
@@ -22,7 +23,7 @@ const Application: ReactNode = ({ Component, pageProps }) => {
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </Fragment>
+    </AuthContextProvider>
   );
 };
 

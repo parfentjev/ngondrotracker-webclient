@@ -1,0 +1,20 @@
+.form {
+  text-align: center;
+}
+
+.form-control {
+  margin: 1rem auto;
+}
+
+.form-control label {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  width: 100%;
+}
+
+.form-control input {
+  display: inline-block;
+  width: 90%;
+  margin: 0 auto;
+}
