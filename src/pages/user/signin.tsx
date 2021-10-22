@@ -1,8 +1,13 @@
-import { FC } from "react";
-import AuthForm from "../../components/User/AuthForm";
+import { FC } from 'react';
+import Card from '../../components/UI/Layout/Card';
+import AuthForm from '../../components/User/AuthForm';
 
-const SingIn: FC = () => {
-  return <AuthForm isSigningIn={true} />;
-}
+const SigninPage: FC = () => {
+  return (
+    <Card title='Sign in with your account'>
+      <AuthForm isSigningIn={true} />
+    </Card>
+  );
+};
 
-export default SingIn;
+export default SigninPage;

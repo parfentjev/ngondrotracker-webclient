@@ -1,21 +1,23 @@
 import Link from 'next/link';
 import { FC, useContext } from 'react';
-import AuthContext from '../../store/auth-context';
-
+import AuthContext from '../../../store/auth-context';
+import routes from '../../../configuration/routes';
 import classes from './css/MainHeader.module.css';
+import Route from '../../../models/Route';
+
+const isRouteApplicable = (route: Route, isAuthenticated: boolean): boolean => {
+  return (
+    route.navigationMenu &&
+    (isAuthenticated ? route.visibleForUsers : route.visibleForGuests)
+  );
+};
 
 const MainHeader: FC = () => {
   const authContext = useContext(AuthContext);
 
-  let navigationItems: { to: string; text: string }[];
-  if (authContext.isAuthenticated) {
-    navigationItems = [{ to: '/user/logout', text: 'logout' }];
-  } else {
-    navigationItems = [
-      { to: '/user/signin', text: 'Sign In' },
-      { to: '/user/signup', text: 'Sing Up' },
-    ];
-  }
+  const navigationItems = routes.filter((route) =>
+    isRouteApplicable(route, authContext.isAuthenticated)
+  );
 
   return (
     <header className={classes['header']}>
@@ -30,8 +32,8 @@ const MainHeader: FC = () => {
       <nav className={classes['navigation']}>
         <ul className={classes['list']}>
           {navigationItems.map((item) => (
-            <li key={item.to} className={classes['list-item']}>
-              <Link href={item.to}>{item.text}</Link>
+            <li key={item.route} className={classes['list-item']}>
+              <Link href={item.route}>{item.label}</Link>
             </li>
           ))}
         </ul>

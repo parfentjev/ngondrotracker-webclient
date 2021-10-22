@@ -1,0 +1,35 @@
+.form-group {
+  margin: 1rem auto;
+}
+
+.form-group label {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  width: 100%;
+}
+
+.form-group input {
+  display: inline-block;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.form-control {
+  border: 1px solid rgb(209, 209, 209);
+  border-radius: 3px;
+  height: 2.5rem;
+  font-size: 1rem;
+}
+
+.button {
+  padding: .5rem 1rem;
+}
+
+.button-primary {
+  background-color: var(--color-primary-3);
+  border: none;
+  color: #fff;
+  border-radius: 3px;
+  font-size: 1rem;
+}

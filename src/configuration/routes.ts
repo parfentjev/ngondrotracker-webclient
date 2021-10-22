@@ -1,0 +1,54 @@
+import Route from '../models/Route';
+
+const routes: Route[] = [
+  // navigation menu users
+  {
+    label: 'Profile',
+    route: '/user/',
+    navigationMenu: true,
+    visibleForUsers: true,
+    visibleForGuests: false,
+  },
+  {
+    label: 'Log out',
+    route: '/user/signout',
+    navigationMenu: true,
+    visibleForUsers: true,
+    visibleForGuests: false,
+  },
+
+  // navigation menu guests
+  {
+    label: 'Log in',
+    route: '/user/signin',
+    navigationMenu: true,
+    visibleForUsers: false,
+    visibleForGuests: true,
+  },
+  {
+    label: 'Register',
+    route: '/user/signup',
+    navigationMenu: true,
+    visibleForUsers: false,
+    visibleForGuests: true,
+  },
+
+  // footer menu all
+  {
+    label: 'Link 1',
+    route: '/',
+    footerMenu: true,
+  },
+  {
+    label: 'Link 2',
+    route: '/',
+    footerMenu: true,
+  },
+  {
+    label: 'Link 3',
+    route: '/',
+    footerMenu: true,
+  },
+];
+
+export default routes;

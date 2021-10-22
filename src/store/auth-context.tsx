@@ -1,5 +1,5 @@
-import { createContext, FC, useEffect, useState } from 'react';
-import { UserToken } from '../models/UserToken';
+import { createContext, FC, useCallback, useEffect, useState } from 'react';
+import UserToken from '../models/UserToken';
 
 type AuthContextType = {
   token: UserToken;
@@ -17,18 +17,34 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthContextProvider: FC = ({ children }) => {
   const [token, setToken] = useState<UserToken>(null);
-  const [authenticated, setAuthenticated] = useState<boolean>();
+  const authenticated = token !== null;
 
-  useEffect(() => setAuthenticated(token !== null), [token]);
+  useEffect(() => {
+    const localToken = localStorage.getItem('token');
+    const localExpirationDate = new Date(
+      localStorage.getItem('expirationDate')
+    );
 
-  const signinHandler = (token: UserToken) => {
-    // setToken(token);
-    console.log('singing in with', token.token, token.expirationDate);
-  };
+    if (!localToken) return;
 
-  const signoutHandler = () => {
-    // setToken(null);
-  };
+    if (localExpirationDate.getTime() - new Date().getTime() < 6000) {
+      clearLocalToken();
+
+      return;
+    }
+
+    setToken(new UserToken(localToken, localExpirationDate));
+  }, []);
+
+  const signinHandler = useCallback((token: UserToken) => {
+    storeLocalToken(token);
+    setToken(token);
+  }, []);
+
+  const signoutHandler = useCallback(() => {
+    clearLocalToken();
+    setToken(null);
+  }, []);
 
   const value: AuthContextType = {
     token: token,
@@ -37,9 +53,17 @@ export const AuthContextProvider: FC = ({ children }) => {
     signout: signoutHandler,
   };
 
-  return (
-    <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+const storeLocalToken = (token: UserToken) => {
+  localStorage.setItem('token', token.token);
+  localStorage.setItem('expirationDate', token.expirationDate.toISOString());
+};
+
+const clearLocalToken = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('expirationDate');
 };
 
 export default AuthContext;

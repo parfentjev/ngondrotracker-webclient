@@ -1,0 +1,9 @@
+.card {
+  background-color: #fff;
+  padding: 3rem;
+  border-radius: 5px;
+}
+
+.title {
+  text-transform: capitalize;
+}

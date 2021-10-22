@@ -13,6 +13,11 @@
 
 body {
   margin: 0;
-  background-color: var(--color-primary-1);
+  background-color: rgb(235, 235, 235);
   font-family: 'Roboto', sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-primary-3)
 }

@@ -1,5 +1,6 @@
-import '../components/UI/css/shared.css';
-import Layout from '../components/Layout/Layout';
+import '../components/UI/shared.css';
+import '../components/UI/Forms/css/form.css';
+import Layout from '../components/UI/Layout/Layout';
 import Head from 'next/head';
 import { AuthContextProvider } from '../store/auth-context';
 import { AppProps } from 'next/dist/shared/lib/router/router';
