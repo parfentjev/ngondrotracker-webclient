@@ -3,7 +3,7 @@ import Form from '../UI/Forms/Form';
 import FormGroup from '../UI/Forms/FormGroup';
 import Input from '../UI/Forms/Input';
 import Link from 'next/link';
-import { userSignup, userSignin } from '../../api/user';
+import { signup, signin } from '../../api/user';
 import useHttp, { RequestStatus } from '../../hooks/use-http';
 import AuthContext from '../../store/auth-context';
 import UserToken from '../../models/UserToken';
@@ -13,8 +13,8 @@ const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
   const authContext = useContext(AuthContext);
   const router = useRouter();
 
-  const apiRequest = isSigningIn ? userSignin : userSignup;
-  const { sendRequest, httpState } = useHttp(apiRequest);
+  const apiRequest = isSigningIn ? signin : signup;
+  const { sendRequest, state } = useHttp(apiRequest);
 
   const actionLabel = isSigningIn ? 'Sign In' : 'Sign Up';
 
@@ -22,18 +22,18 @@ const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
   const passwordRef = useRef<HTMLInputElement>();
 
   useEffect(() => {
-    if (httpState.status === RequestStatus.SUCCESS) {
+    if (state.status === RequestStatus.SUCCESS) {
       const token = new UserToken(
-        httpState.data.token,
-        new Date(+httpState.data.expirationDate * 1000)
+        state.data.token,
+        new Date(+state.data.expirationDate)
       );
 
       authContext.signin(token);
       router.replace('/');
-    } else if (httpState.status === RequestStatus.ERROR) {
-      alert(httpState.message);
+    } else if (state.status === RequestStatus.ERROR) {
+      alert(state.message);
     }
-  }, [httpState]);
+  }, [state]);
 
   const submitHandler = (event: FormEvent) => {
     event.preventDefault();

@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { AuthContextProvider } from '../store/auth-context';
 import { AppProps } from 'next/dist/shared/lib/router/router';
 
-const Application = ({ Component, pageProps }: AppProps) => {
+const Application = ({ Component, pageProps }: AppProps) => {  
   return (
     <AuthContextProvider>
       <Head>

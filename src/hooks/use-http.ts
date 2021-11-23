@@ -1,4 +1,5 @@
-import { useCallback, useReducer } from 'react';
+import { Reducer, useCallback, useReducer } from 'react';
+import UserToken from '../models/UserToken';
 
 enum ActionType {
   SEND,
@@ -7,21 +8,25 @@ enum ActionType {
 }
 
 export enum RequestStatus {
+  PENDING,
   SENDING,
   SUCCESS,
   ERROR,
 }
 
-type RequestState<ResT> = {
+type RequestState<T> = {
   status: RequestStatus;
   message: string;
-  data: ResT;
+  data: T;
 };
 
-const httpReducer = <ResT>(
-  state: RequestState<ResT>,
-  action: { type: ActionType; data?: any; message?: string }
-) => {
+type RequestAction = {
+  type: ActionType;
+  data?: any;
+  message?: string;
+};
+
+const httpReducer = <T>(status: RequestState<T>, action: RequestAction) => {
   switch (action.type) {
     case ActionType.SEND:
       return {
@@ -41,33 +46,40 @@ const httpReducer = <ResT>(
         message: action.message,
         data: action.data,
       };
+    default:
+      return status;
   }
 };
 
 const useHttp = <ReqT, ResT>(
   requestFunction: (requestData: ReqT) => Promise<ResT>
 ) => {
-  const [httpState, dispatch] = useReducer(httpReducer, {
-    status: null,
+  const [state, dispatch] = useReducer<
+    Reducer<RequestState<ResT>, RequestAction>
+  >(httpReducer, {
+    status: RequestStatus.PENDING,
     message: null,
     data: null,
   });
 
   const sendRequest = useCallback(
-    async (requestData: ReqT) => {
+    async (requestData: ReqT): Promise<UserToken> => {
       dispatch({ type: ActionType.SEND });
 
+      let responseData;
       try {
-        const responseData = await requestFunction(requestData);
+        responseData = await requestFunction(requestData);
         dispatch({ type: ActionType.SUCCESS, data: responseData });
       } catch (error) {
         dispatch({ type: ActionType.ERROR, message: error.message });
       }
+
+      return responseData;
     },
     [requestFunction]
   );
 
-  return { sendRequest, httpState };
+  return { sendRequest, state };
 };
 
 export default useHttp;

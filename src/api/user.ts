@@ -1,48 +1,53 @@
 import UserToken from '../models/UserToken';
+import { HttpMethod } from '../models/HttpMethod';
+import { httpRequest } from './util/http-utils';
+import HttpRequest from '../models/HttpRequest';
 
-const DOMAIN = 'http://localhost:8080';
-
-const fetchAuthenticationEndpoint = async (
+const authenticate = async (
   endpoint: string,
   email: string,
   password: string
-) => {
-  return fetch(DOMAIN + endpoint, {
-    headers: { 'Content-Type': 'application/json' },
-    method: 'POST',
-    body: JSON.stringify({
-      email: email,
-      password: password,
-    }),
-  })
-    .then((response) => {
-      if (!response.ok) throw new Error('sign up error');
+): Promise<UserToken> => {
+  const request = new HttpRequest(endpoint, HttpMethod.POST);
+  request.body = {
+    email: email,
+    password: password,
+  };
 
-      return response.json();
-    })
-    .then((data) => {
-      return new UserToken(data.result.token, data.result.expirationDate);
-    });
+  const data = await httpRequest(request);
+
+  return new UserToken(data.result.token, data.result.expirationDate);
 };
 
-export const userSignup = async (request: {
+export const signup = async (requestData: {
   email: string;
   password: string;
-}) => {
-  return await fetchAuthenticationEndpoint(
+}): Promise<UserToken> => {
+  return await authenticate(
     '/user/signup',
-    request.email,
-    request.password
+    requestData.email,
+    requestData.password
   );
 };
 
-export const userSignin = async (request: {
+export const signin = async (requestData: {
   email: string;
   password: string;
-}) => {
-  return await fetchAuthenticationEndpoint(
+}): Promise<UserToken> => {
+  return await authenticate(
     '/user/signin',
-    request.email,
-    request.password
+    requestData.email,
+    requestData.password
   );
+};
+
+export const refreshToken = async (requestData: {
+  token: UserToken;
+}): Promise<UserToken> => {
+  const request = new HttpRequest('/user/refreshToken', HttpMethod.GET);
+  request.token = requestData.token;
+
+  const data = await httpRequest(request);
+
+  return new UserToken(data.result.token, data.result.expirationDate);
 };
