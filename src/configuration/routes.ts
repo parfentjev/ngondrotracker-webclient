@@ -6,11 +6,11 @@ const routes: Route[] = [
     label: 'Profile',
     route: '/user/',
     navigationMenu: true,
-    visibleForUsers: true,
+    visibleForUsers: false,
     visibleForGuests: false,
   },
   {
-    label: 'Log out',
+    label: 'Log Out',
     route: '/user/signout',
     navigationMenu: true,
     visibleForUsers: true,
@@ -19,7 +19,7 @@ const routes: Route[] = [
 
   // navigation menu guests
   {
-    label: 'Log in',
+    label: 'Log In',
     route: '/user/signin',
     navigationMenu: true,
     visibleForUsers: false,
