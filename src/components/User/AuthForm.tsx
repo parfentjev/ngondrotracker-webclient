@@ -3,11 +3,12 @@ import Form from '../UI/Forms/Form';
 import FormGroup from '../UI/Forms/FormGroup';
 import Input from '../UI/Forms/Input';
 import Link from 'next/link';
-import { signup, signin } from '../../api/user';
+import { signup, signin } from '../../api/user-api';
 import useHttp, { RequestStatus } from '../../hooks/use-http';
 import AuthContext from '../../store/auth-context';
 import UserToken from '../../models/UserToken';
 import { useRouter } from 'next/dist/client/router';
+import Button from '../UI/Forms/Button';
 
 const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
   const authContext = useContext(AuthContext);
@@ -25,7 +26,8 @@ const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
     if (state.status === RequestStatus.SUCCESS) {
       const token = new UserToken(
         state.data.token,
-        new Date(+state.data.expirationDate)
+        new Date(+state.data.expirationDate),
+        state.data.roles
       );
 
       authContext.signin(token);
@@ -77,9 +79,9 @@ const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
           ref={passwordRef}
         />
       </FormGroup>
-      <button type='submit' className='button button-primary'>
+      <Button type='submit'>
         {actionLabel}
-      </button>
+      </Button>
     </Form>
   );
 };

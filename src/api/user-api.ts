@@ -16,7 +16,7 @@ const authenticate = async (
 
   const data = await httpRequest(request);
 
-  return new UserToken(data.result.token, data.result.expirationDate);
+  return new UserToken(data.result.token, data.result.expirationDate, data.result.roles);
 };
 
 export const signup = async (requestData: {
@@ -49,5 +49,5 @@ export const refreshToken = async (requestData: {
 
   const data = await httpRequest(request);
 
-  return new UserToken(data.result.token, data.result.expirationDate);
+  return new UserToken(data.result.token, data.result.expirationDate, data.result.roles);
 };

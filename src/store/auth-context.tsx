@@ -1,7 +1,7 @@
 import { createContext, FC, useCallback, useEffect, useState } from 'react';
 import useHttp, { RequestStatus } from '../hooks/use-http';
 import UserToken from '../models/UserToken';
-import { refreshToken } from '../api/user';
+import { refreshToken } from '../api/user-api';
 
 type AuthContextType = {
   token: UserToken;
@@ -27,6 +27,7 @@ export const AuthContextProvider: FC = ({ children }) => {
     const localExpirationDate = new Date(
       localStorage.getItem('expirationDate')
     );
+    const localRoles = localStorage.getItem('roles');
 
     if (!localToken) return;
 
@@ -39,13 +40,13 @@ export const AuthContextProvider: FC = ({ children }) => {
       172800000
     ) {
       sendRequest({
-        token: new UserToken(localToken, localExpirationDate),
+        token: new UserToken(localToken, localExpirationDate, localRoles),
       });
 
       return;
     }
 
-    setToken(new UserToken(localToken, localExpirationDate));
+    setToken(new UserToken(localToken, localExpirationDate, localRoles));
   }, []);
 
   const signinHandler = useCallback((token: UserToken) => {
@@ -63,7 +64,8 @@ export const AuthContextProvider: FC = ({ children }) => {
       if (state.status === RequestStatus.SUCCESS) {
         const token = new UserToken(
           state.data.token,
-          new Date(+state.data.expirationDate)
+          new Date(+state.data.expirationDate),
+          state.data.roles
         );
 
         signinHandler(token);
@@ -84,11 +86,13 @@ export const AuthContextProvider: FC = ({ children }) => {
 const storeLocalToken = (token: UserToken) => {
   localStorage.setItem('token', token.token);
   localStorage.setItem('expirationDate', token.expirationDate.toISOString());
+  localStorage.setItem('roles', token.roles);
 };
 
 const clearLocalToken = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('expirationDate');
+  localStorage.removeItem('roles');
 };
 
 export default AuthContext;
