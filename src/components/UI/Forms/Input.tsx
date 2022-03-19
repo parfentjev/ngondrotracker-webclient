@@ -1,4 +1,4 @@
-import { Fragment, FC, forwardRef } from 'react';
+import { Fragment, forwardRef } from 'react';
 
 const Input = forwardRef<
   HTMLInputElement,

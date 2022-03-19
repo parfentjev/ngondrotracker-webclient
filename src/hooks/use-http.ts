@@ -66,7 +66,7 @@ const useHttp = <ReqT, ResT>(
     async (requestData: ReqT): Promise<UserToken> => {
       dispatch({ type: ActionType.SEND });
 
-      let responseData;
+      let responseData: any;
       try {
         responseData = await requestFunction(requestData);
         dispatch({ type: ActionType.SUCCESS, data: responseData });

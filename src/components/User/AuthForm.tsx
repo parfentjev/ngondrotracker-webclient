@@ -1,4 +1,4 @@
-import { FC, FormEvent, useContext, useEffect, useRef } from 'react';
+import { FC, FormEvent, useContext, useEffect, useRef, useState } from 'react';
 import Form from '../UI/Forms/Form';
 import FormGroup from '../UI/Forms/FormGroup';
 import Input from '../UI/Forms/Input';
@@ -9,6 +9,7 @@ import AuthContext from '../../store/auth-context';
 import UserToken from '../../models/UserToken';
 import { useRouter } from 'next/dist/client/router';
 import Button from '../UI/Forms/Button';
+import { mapMessage, ServerMessages } from '../../api/util/message-mapping-utils';
 
 const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
   const authContext = useContext(AuthContext);
@@ -21,6 +22,7 @@ const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
 
   const emailRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
+  const [errorMessage, setErrorMessage] = useState<string>();
 
   useEffect(() => {
     if (state.status === RequestStatus.SUCCESS) {
@@ -33,7 +35,8 @@ const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
       authContext.signin(token);
       router.replace('/');
     } else if (state.status === RequestStatus.ERROR) {
-      alert(state.message);
+
+      state.message in ServerMessages ? setErrorMessage(mapMessage(ServerMessages[state.message], 'User')) : setErrorMessage(state.message);
     }
   }, [state]);
 
@@ -79,9 +82,8 @@ const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
           ref={passwordRef}
         />
       </FormGroup>
-      <Button type='submit'>
-        {actionLabel}
-      </Button>
+      {errorMessage && <div className='form-error'>{errorMessage}</div> }
+      <Button type='submit'>{actionLabel}</Button>
     </Form>
   );
 };
