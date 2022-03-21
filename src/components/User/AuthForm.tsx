@@ -9,7 +9,10 @@ import AuthContext from '../../store/auth-context';
 import UserToken from '../../models/UserToken';
 import { useRouter } from 'next/dist/client/router';
 import Button from '../UI/Forms/Button';
-import { mapMessage, ServerMessages } from '../../api/util/message-mapping-utils';
+import {
+  mapMessage,
+  ServerMessages,
+} from '../../api/util/message-mapping-utils';
 
 const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
   const authContext = useContext(AuthContext);
@@ -35,8 +38,13 @@ const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
       authContext.signin(token);
       router.replace('/');
     } else if (state.status === RequestStatus.ERROR) {
-
-      state.message in ServerMessages ? setErrorMessage(mapMessage(ServerMessages[state.message], 'User')) : setErrorMessage(state.message);
+      if (state.message === 'VALIDATION_ERROR') {
+        setErrorMessage('Form data is not valid. Email must be from 3 to 64 symbols. Passowrd must be from 6 to 128 symbols.')
+      } else {
+        state.message in ServerMessages
+          ? setErrorMessage(mapMessage(ServerMessages[state.message], 'User'))
+          : setErrorMessage(state.message);
+      }
     }
   }, [state]);
 
@@ -82,7 +90,7 @@ const AuthForm: FC<{ isSigningIn: boolean }> = ({ isSigningIn }) => {
           ref={passwordRef}
         />
       </FormGroup>
-      {errorMessage && <div className='form-error'>{errorMessage}</div> }
+      {errorMessage && <div className='form-error'>{errorMessage}</div>}
       <Button type='submit'>{actionLabel}</Button>
     </Form>
   );
