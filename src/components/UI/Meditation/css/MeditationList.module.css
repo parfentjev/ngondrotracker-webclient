@@ -1,0 +1,17 @@
+.meditation-list {
+  list-style: none;
+  padding: 0;
+}
+
+.meditation-item {
+  background-color: var(--color-background);
+  padding: 2rem 1rem;
+  margin: 0 0 2rem 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.meditation-item:hover,
+.meditation-item:active {
+  background-color: var(--color-primary-4);
+}

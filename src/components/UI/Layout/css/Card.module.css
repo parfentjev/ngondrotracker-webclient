@@ -1,9 +1,15 @@
 .card {
   background-color: #fff;
-  padding: 3rem;
+  padding: 1rem;
   border-radius: 5px;
 }
 
 .title {
   text-transform: capitalize;
+}
+
+@media (min-width: 1024px) {
+  .card {
+    padding: 3rem;
+  }
 }

@@ -16,14 +16,14 @@
 }
 
 .branding img {
-  height: 100%;
-  max-width: 100%;
+  display: none;
 }
 
 .navigation {
-  display: none;
   width: 75%;
   text-align: right;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .list {
@@ -50,9 +50,10 @@
   border-bottom: 2px solid var(--color-primary-4);
 }
 
-@media (min-width: 640px) {
-  .navigation {
+@media (min-width: 1024px) {
+  .branding img {
     display: inline-block;
-    vertical-align: middle;
+    height: 100%;
+    max-width: 100%;
   }
 }

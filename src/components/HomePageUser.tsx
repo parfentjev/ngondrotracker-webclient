@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { getMeditations } from '../api/meditation-api';
 import useHttp, { RequestStatus } from '../hooks/use-http';
 import Meditation from '../models/Meditation';
+import MeditationList from './UI/Meditation/MeditationList';
 
 const HomePageUser: FC = () => {
   const [meditations, setMeditations] = useState<Meditation[]>([]);
@@ -17,13 +18,7 @@ const HomePageUser: FC = () => {
     }
   }, [state]);
 
-  return (
-    <ul>
-      {meditations.map((i) => (
-        <li key={i.path}>{i.title}</li>
-      ))}
-    </ul>
-  );
+  return <MeditationList meditations={meditations} />;
 };
 
 export default HomePageUser;

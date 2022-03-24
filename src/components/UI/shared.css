@@ -4,6 +4,7 @@
   --color-primary-3: #7e0a0a;
   --color-primary-4: #ffa14a;
   --color-primary-5: #41403c;
+  --color-background: rgb(235, 235, 235);
   --header-height: 3rem;
 }
 
@@ -13,13 +14,13 @@
 
 body {
   margin: 0;
-  background-color: rgb(235, 235, 235);
+  background-color: var(--color-background);
   font-family: 'Roboto', sans-serif;
 }
 
 a {
   text-decoration: none;
-  color: var(--color-primary-3)
+  color: var(--color-primary-3);
 }
 
 .text-center {
