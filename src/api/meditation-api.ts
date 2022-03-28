@@ -15,3 +15,10 @@ export const getMeditations = async (): Promise<Meditation[]> => {
 
   return data;
 };
+
+export const getMeditationByPath = async (path: string): Promise<Meditation> => {
+  const request = new HttpRequest('/meditations/' + path + '/', HttpMethod.GET);
+  const response = await httpRequest(request);
+
+  return new Meditation(response.result.title, response.result.path, response.result.goal, response.result.order);
+};
